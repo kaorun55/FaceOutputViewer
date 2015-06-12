@@ -22,6 +22,9 @@ namespace KinectV2FaceOutput
 
         ColorImageFormat colorFormat = ColorImageFormat.Bgra;
 
+        KinectHdFace[] hdFace;
+        Body[] bodies;
+
         // WPF
         WriteableBitmap colorBitmap;
         byte[] colorBuffer;
@@ -56,6 +59,18 @@ namespace KinectV2FaceOutput
             }
         }
 
+        public int ColorWidth
+        {
+            get;
+            private set;
+        }
+
+        public int ColorHeight
+        {
+            get;
+            private set;
+        }
+
         public void Start()
         {
             Trace.Write( "KinectV2FaceOutput.Start()" );
@@ -66,6 +81,8 @@ namespace KinectV2FaceOutput
             // カラー画像の情報を作成する(BGRAフォーマット)
             colorFrameDesc = sensor.ColorFrameSource.CreateFrameDescription(
                                                     colorFormat );
+            ColorWidth = colorFrameDesc.Width;
+            ColorHeight = colorFrameDesc.Height;
 
             // カラー用のビットマップを作成する
             colorBitmap = new WriteableBitmap(
@@ -75,6 +92,16 @@ namespace KinectV2FaceOutput
             colorRect = new Int32Rect( 0, 0,
                                 colorFrameDesc.Width, colorFrameDesc.Height );
             colorBuffer = new byte[colorStride * colorFrameDesc.Height];
+
+            // 顔情報を作成する
+            bodies = new Body[sensor.BodyFrameSource.BodyCount];
+            faceData = new FaceData[sensor.BodyFrameSource.BodyCount];
+
+            hdFace = new KinectHdFace[sensor.BodyFrameSource.BodyCount];
+            for ( int i = 0; i < sensor.BodyFrameSource.BodyCount; i++ ) {
+                hdFace[i] = new KinectHdFace( sensor );
+                faceData[i] = new FaceData();
+            }
 
             // 
             multiReader = sensor.OpenMultiSourceFrameReader( FrameSourceTypes.Color | FrameSourceTypes.Body );
@@ -94,6 +121,23 @@ namespace KinectV2FaceOutput
                     // BGRAデータを取得する
                     colorFrame.CopyConvertedFrameDataToArray( colorBuffer, colorFormat );
                     colorBitmap.WritePixels( colorRect, colorBuffer, colorStride, 0 );
+                }
+            }
+
+            // ボディ
+            using ( var bodyFrame = multiFrame.BodyFrameReference.AcquireFrame() ) {
+                if ( bodyFrame != null ) {
+                    // ボディデータを取得する
+                    bodyFrame.GetAndRefreshBodyData( bodies );
+
+                    for ( int i = 0; i < bodies.Length; i++ ) {
+                        hdFace[i].SetTrackingId( bodies[i].TrackingId );
+                        hdFace[i].Update();
+
+                        faceData[i].IsFaceTracked = hdFace[i].IsFaceTracked;
+                        faceData[i].ColorSpacePoints = hdFace[i].ColorSpacePoints;
+                        faceData[i].CameraSpacePoints = hdFace[i].CameraSpacePoints;
+                    }
                 }
             }
 

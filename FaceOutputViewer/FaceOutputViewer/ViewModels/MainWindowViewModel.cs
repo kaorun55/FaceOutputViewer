@@ -14,6 +14,11 @@ using Livet.Messaging.Windows;
 
 using FaceOutputViewer.Models;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace FaceOutputViewer.ViewModels
 {
@@ -74,7 +79,39 @@ namespace FaceOutputViewer.ViewModels
 
         private void UpdateFaceData()
         {
-            RaisePropertyChanged("ColorImage");
+            var faceData = faceModel.FaceData.FirstOrDefault( f => f.IsFaceTracked );
+            if ( faceData != null ) {
+                float scale = 980 / (float)faceModel.ColorWidth;
+                CanvasFace.Clear();
+                var point = faceData.ColorSpacePoints[0];
+                //foreach ( var point in faceData.ColorSpacePoints ) {
+                CanvasFace.Add( MakeEllipse( point, 5, Brushes.Green, scale ) );
+                //}
+            }
+
+            // 表示
+            RaisePropertyChanged( "CanvasFace" );
+            RaisePropertyChanged( "ColorImage" );
+        }
+
+        private Ellipse MakeEllipse( Point point, int R, Brush color, float scale )
+        {
+            var ellipse = new Ellipse()
+            {
+                Width = R * 2,
+                Height =  R * 2,
+                Fill = color,
+            };
+
+            // カラーを縮小表示しているため合わせる
+            point.X *= scale;
+            point.Y *= scale;
+
+            // Depth座標系で円を配置する
+            Canvas.SetLeft( ellipse, point.X - R );
+            Canvas.SetTop( ellipse, point.Y - R );
+
+            return ellipse;
         }
 
 
@@ -198,5 +235,24 @@ namespace FaceOutputViewer.ViewModels
         }
         #endregion
 
+
+        #region CanvasFace変更通知プロパティ
+        private ObservableCollection<FrameworkElement> _CanvasFace = new ObservableCollection<FrameworkElement>();
+
+        public ObservableCollection<FrameworkElement> CanvasFace
+        {
+            get
+            {
+                return _CanvasFace;
+            }
+            set
+            {
+                if ( _CanvasFace == value )
+                    return;
+                _CanvasFace = value;
+                RaisePropertyChanged( "CanvasFace" );
+            }
+        }
+        #endregion
     }
 }

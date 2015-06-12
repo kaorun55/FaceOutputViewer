@@ -67,6 +67,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KinectHdFace.cs" />
     <Compile Include="KinectV2FaceOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

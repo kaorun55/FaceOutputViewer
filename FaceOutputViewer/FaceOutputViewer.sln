@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceOutputContract", "FaceO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectV2FaceOutput", "KinectV2FaceOutput\KinectV2FaceOutput.csproj", "{82B4D854-B4DA-40A1-9F97-0E49A831DD75}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "addin", "addin", "{968469F8-9E85-4E89-AD06-DAB87AB4E769}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "addins", "addins", "{968469F8-9E85-4E89-AD06-DAB87AB4E769}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceOutputViewer", "FaceOutputViewer\FaceOutputViewer.csproj", "{E2B9A5F4-B79C-498D-A294-1FA559E3A1D9}"
 EndProject

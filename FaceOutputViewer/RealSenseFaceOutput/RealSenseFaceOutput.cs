@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using FaceOutputContract;
 
 namespace RealSenseFaceOutput
@@ -34,6 +36,18 @@ namespace RealSenseFaceOutput
         }
 
         public BitmapSource ColorImage
+        {
+            get;
+            private set;
+        }
+
+        public int ColorWidth
+        {
+            get;
+            private set;
+        }
+
+        public int ColorHeight
         {
             get;
             private set;

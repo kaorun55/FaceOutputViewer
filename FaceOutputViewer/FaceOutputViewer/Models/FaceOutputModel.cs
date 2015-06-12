@@ -89,5 +89,21 @@ namespace FaceOutputViewer.Models
                 return faceData.ColorImage;
             }
         }
+
+        public int ColorWidth
+        {
+            get
+            {
+                return faceData.ColorWidth;
+            }
+        }
+
+        public int ColorHeight
+        {
+            get
+            {
+                return faceData.ColorHeight;
+            }
+        }
     }
 }

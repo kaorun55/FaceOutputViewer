@@ -41,6 +41,15 @@
 
             <Grid Width="960" Height="540">
                 <Image Source="{Binding ColorImage}" />
+
+                <ItemsControl ItemsSource="{Binding CanvasFace}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Opacity="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
             </Grid>
         </StackPanel>
     </Grid>
