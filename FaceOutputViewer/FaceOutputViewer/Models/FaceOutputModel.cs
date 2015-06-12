@@ -42,11 +42,19 @@ namespace FaceOutputViewer.Models
 
         public void Start()
         {
+            if ( addinIndex < 0 ) {
+                return;
+            }
+
             addins[addinIndex].Start();
         }
 
         public void Stop()
         {
+            if ( addinIndex < 0 ) {
+                return;
+            }
+
             addins[addinIndex].Stop();
         }
     }

@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using FaceOutputContract;
 
-namespace KinectV2FaceOutput
+namespace RealSenseFaceOutput
 {
     [Export( typeof( IFaceOutputContract ) )]
-    public class KinectV2FaceOutput : IFaceOutputContract
+    public class RealSenseFaceOutput : IFaceOutputContract
     {
         FaceData[] faceData;
 
@@ -20,7 +20,7 @@ namespace KinectV2FaceOutput
         {
             get
             {
-                return "Kinect V2 FaceOutput";
+                return "RealSense FaceOutput";
             }
         }
 
@@ -34,7 +34,7 @@ namespace KinectV2FaceOutput
 
         public void Start()
         {
-            Trace.Write( "KinectV2FaceOutput.Start()" );
+            Trace.Write( "RealSenseFaceOutput.Start()" );
         }
 
         public void Stop()

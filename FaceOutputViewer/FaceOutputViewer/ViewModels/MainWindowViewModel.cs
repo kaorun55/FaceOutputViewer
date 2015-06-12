@@ -87,12 +87,16 @@ namespace FaceOutputViewer.ViewModels
             faceModel.LoadAddin();
             AddinList = new ListCollectionView( faceModel.Addins.Select( a => a.Name ).ToArray() );
             AddinList.CurrentChanged += AddinList_CurrentChanged;
+
+            faceModel.SelectAddin( AddinList.CurrentPosition );
+
         }
 
         void AddinList_CurrentChanged( object sender, EventArgs e )
         {
             var lv = sender as ICollectionView;
             CurrentPosition = lv.CurrentPosition;
+            faceModel.SelectAddin( lv.CurrentPosition );
 
             if ( lv.CurrentPosition < 0 ) {
                 System.Diagnostics.Trace.WriteLine( "選択無し" );
@@ -147,7 +151,6 @@ namespace FaceOutputViewer.ViewModels
 
             System.Diagnostics.Trace.WriteLine( string.Format( "CurrentChanged:位置={0}", AddinList.CurrentPosition ) );
 
-            faceModel.SelectAddin( AddinList.CurrentPosition );
             faceModel.Start();
         }
         #endregion
@@ -175,7 +178,6 @@ namespace FaceOutputViewer.ViewModels
 
             System.Diagnostics.Trace.WriteLine( string.Format( "CurrentChanged:位置={0}", AddinList.CurrentPosition ) );
 
-            faceModel.SelectAddin( AddinList.CurrentPosition );
             faceModel.Stop();
         }
         #endregion
