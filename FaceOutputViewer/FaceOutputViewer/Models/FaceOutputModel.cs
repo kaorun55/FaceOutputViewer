@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Text;
+using System.Windows.Media.Imaging;
 using FaceOutputContract;
 using Livet;
 
@@ -17,6 +18,7 @@ namespace FaceOutputViewer.Models
 
         [ImportMany]
         private List<IFaceOutputContract> addins = new List<IFaceOutputContract>();
+        IFaceOutputContract faceData;
 
         int addinIndex = -1;
 
@@ -33,6 +35,16 @@ namespace FaceOutputViewer.Models
             var catalog = new DirectoryCatalog( "addins" );
             var container = new CompositionContainer( catalog );
             container.ComposeParts( this );
+
+            foreach ( var addin in addins ) {
+                addin.OnFaceOutput += addin_OnFaceOutput;
+            }
+
+        }
+
+        void addin_OnFaceOutput( object sender, FaceOutputEventArgs e )
+        {
+            RaisePropertyChanged( "UpdateFaceData" );
         }
 
         public void SelectAddin(int index)
@@ -46,7 +58,8 @@ namespace FaceOutputViewer.Models
                 return;
             }
 
-            addins[addinIndex].Start();
+            faceData = addins[addinIndex];
+            faceData.Start();
         }
 
         public void Stop()
@@ -55,7 +68,26 @@ namespace FaceOutputViewer.Models
                 return;
             }
 
-            addins[addinIndex].Stop();
+            faceData.Stop();
+        }
+
+
+        #region FaceData変更通知プロパティ
+        public FaceData[] FaceData
+        {
+            get
+            {
+                return faceData.FaceData;
+            }
+        }
+        #endregion
+
+        public BitmapSource ColorImage
+        {
+            get
+            {
+                return faceData.ColorImage;
+            }
         }
     }
 }

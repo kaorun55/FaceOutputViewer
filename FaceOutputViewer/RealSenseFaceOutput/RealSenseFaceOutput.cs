@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using FaceOutputContract;
 
 namespace RealSenseFaceOutput
@@ -31,6 +32,13 @@ namespace RealSenseFaceOutput
                 return faceData;
             }
         }
+
+        public BitmapSource ColorImage
+        {
+            get;
+            private set;
+        }
+
 
         public void Start()
         {

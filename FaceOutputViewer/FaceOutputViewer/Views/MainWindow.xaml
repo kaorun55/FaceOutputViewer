@@ -6,7 +6,7 @@
         xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
         xmlns:v="clr-namespace:FaceOutputViewer.Views"
         xmlns:vm="clr-namespace:FaceOutputViewer.ViewModels"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" SizeToContent="WidthAndHeight">
     
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -38,6 +38,10 @@
             <ListBox ItemsSource="{Binding AddinList}" Height="100"/>
             <Button Content="開始" Command="{Binding StartCommand}"/>
             <Button Content="終了" Command="{Binding StopCommand}"/>
+
+            <Grid Width="960" Height="540">
+                <Image Source="{Binding ColorImage}" />
+            </Grid>
         </StackPanel>
     </Grid>
 </Window>

@@ -13,6 +13,7 @@ using Livet.EventListeners;
 using Livet.Messaging.Windows;
 
 using FaceOutputViewer.Models;
+using System.Windows.Media.Imaging;
 
 namespace FaceOutputViewer.ViewModels
 {
@@ -65,6 +66,15 @@ namespace FaceOutputViewer.ViewModels
 
         public void Initialize()
         {
+            CompositeDisposable.Add( new PropertyChangedEventListener( faceModel )
+            {
+                {"UpdateFaceData", (s, e) => UpdateFaceData()},
+            } );
+        }
+
+        private void UpdateFaceData()
+        {
+            RaisePropertyChanged("ColorImage");
         }
 
 
@@ -89,7 +99,6 @@ namespace FaceOutputViewer.ViewModels
             AddinList.CurrentChanged += AddinList_CurrentChanged;
 
             faceModel.SelectAddin( AddinList.CurrentPosition );
-
         }
 
         void AddinList_CurrentChanged( object sender, EventArgs e )
@@ -149,8 +158,6 @@ namespace FaceOutputViewer.ViewModels
                 return;
             }
 
-            System.Diagnostics.Trace.WriteLine( string.Format( "CurrentChanged:位置={0}", AddinList.CurrentPosition ) );
-
             faceModel.Start();
         }
         #endregion
@@ -176,9 +183,18 @@ namespace FaceOutputViewer.ViewModels
                 return;
             }
 
-            System.Diagnostics.Trace.WriteLine( string.Format( "CurrentChanged:位置={0}", AddinList.CurrentPosition ) );
-
             faceModel.Stop();
+        }
+        #endregion
+
+
+        #region ColorImage変更通知プロパティ
+        public BitmapSource ColorImage
+        {
+            get
+            {
+                return faceModel.ColorImage;
+            }
         }
         #endregion
 
