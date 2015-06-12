@@ -36,6 +36,8 @@
         <StackPanel Orientation="Vertical">
             <Button Content="更新" Command="{Binding UpdateAddinCommand}"/>
             <ListBox ItemsSource="{Binding AddinList}" Height="100"/>
+            <Button Content="開始" Command="{Binding StartCommand}"/>
+            <Button Content="終了" Command="{Binding StopCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

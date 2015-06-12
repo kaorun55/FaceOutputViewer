@@ -18,6 +18,8 @@ namespace FaceOutputViewer.Models
         [ImportMany]
         private List<IFaceOutputContract> addins = new List<IFaceOutputContract>();
 
+        int addinIndex = -1;
+
         public List<IFaceOutputContract> Addins
         {
             get
@@ -31,6 +33,21 @@ namespace FaceOutputViewer.Models
             var catalog = new DirectoryCatalog( "addins" );
             var container = new CompositionContainer( catalog );
             container.ComposeParts( this );
+        }
+
+        public void SelectAddin(int index)
+        {
+            addinIndex = index;
+        }
+
+        public void Start()
+        {
+            addins[addinIndex].Start();
+        }
+
+        public void Stop()
+        {
+            addins[addinIndex].Stop();
         }
     }
 }

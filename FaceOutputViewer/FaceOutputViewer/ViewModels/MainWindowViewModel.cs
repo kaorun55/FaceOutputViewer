@@ -61,6 +61,7 @@ namespace FaceOutputViewer.ViewModels
          */
 
         FaceOutputModel faceModel = new FaceOutputModel();
+        int CurrentPosition  = -1;
 
         public void Initialize()
         {
@@ -85,6 +86,21 @@ namespace FaceOutputViewer.ViewModels
         {
             faceModel.LoadAddin();
             AddinList = new ListCollectionView( faceModel.Addins.Select( a => a.Name ).ToArray() );
+            AddinList.CurrentChanged += AddinList_CurrentChanged;
+        }
+
+        void AddinList_CurrentChanged( object sender, EventArgs e )
+        {
+            var lv = sender as ICollectionView;
+            CurrentPosition = lv.CurrentPosition;
+
+            if ( lv.CurrentPosition < 0 ) {
+                System.Diagnostics.Trace.WriteLine( "選択無し" );
+                return;
+            }
+
+            var name = lv.CurrentItem as string;
+            System.Diagnostics.Trace.WriteLine( string.Format( "CurrentChanged:位置={0},名前={1}", lv.CurrentPosition, name ) );
         }
         #endregion
 
@@ -108,6 +124,61 @@ namespace FaceOutputViewer.ViewModels
         }
         #endregion
 
+
+        #region StartCommand
+        private ViewModelCommand _StartCommand;
+
+        public ViewModelCommand StartCommand
+        {
+            get
+            {
+                if ( _StartCommand == null ) {
+                    _StartCommand = new ViewModelCommand( Start );
+                }
+                return _StartCommand;
+            }
+        }
+
+        public void Start()
+        {
+            if ( AddinList ==null ) {
+                return;
+            }
+
+            System.Diagnostics.Trace.WriteLine( string.Format( "CurrentChanged:位置={0}", AddinList.CurrentPosition ) );
+
+            faceModel.SelectAddin( AddinList.CurrentPosition );
+            faceModel.Start();
+        }
+        #endregion
+
+
+        #region StopCommand
+        private ViewModelCommand _StopCommand;
+
+        public ViewModelCommand StopCommand
+        {
+            get
+            {
+                if ( _StopCommand == null ) {
+                    _StopCommand = new ViewModelCommand( Stop );
+                }
+                return _StopCommand;
+            }
+        }
+
+        public void Stop()
+        {
+            if ( AddinList ==null ) {
+                return;
+            }
+
+            System.Diagnostics.Trace.WriteLine( string.Format( "CurrentChanged:位置={0}", AddinList.CurrentPosition ) );
+
+            faceModel.SelectAddin( AddinList.CurrentPosition );
+            faceModel.Stop();
+        }
+        #endregion
 
     }
 }
