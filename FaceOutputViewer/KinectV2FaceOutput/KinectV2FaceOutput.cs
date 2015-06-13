@@ -65,6 +65,14 @@ namespace KinectV2FaceOutput
             private set;
         }
 
+
+        public uint VertexCount
+        {
+            get;
+            private set;
+        }
+
+
         public int ColorHeight
         {
             get;
@@ -106,6 +114,9 @@ namespace KinectV2FaceOutput
             // 
             multiReader = sensor.OpenMultiSourceFrameReader( FrameSourceTypes.Color | FrameSourceTypes.Body );
             multiReader.MultiSourceFrameArrived += multiReader_MultiSourceFrameArrived;
+
+            // 顔の点の数
+            VertexCount = KinectHdFace.VertexCount;
         }
 
         void multiReader_MultiSourceFrameArrived( object sender, MultiSourceFrameArrivedEventArgs e )

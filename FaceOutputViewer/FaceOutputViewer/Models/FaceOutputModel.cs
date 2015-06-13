@@ -90,6 +90,15 @@ namespace FaceOutputViewer.Models
             }
         }
 
+
+        public uint VertexCount
+        {
+            get
+            {
+                return faceData.VertexCount;
+            }
+        }
+
         public int ColorWidth
         {
             get

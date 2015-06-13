@@ -77,21 +77,46 @@ namespace FaceOutputViewer.ViewModels
             } );
         }
 
+        List<Ellipse> facePoints;
+
         private void UpdateFaceData()
         {
             var faceData = faceModel.FaceData.FirstOrDefault( f => f.IsFaceTracked );
             if ( faceData != null ) {
-                float scale = 980 / (float)faceModel.ColorWidth;
-                CanvasFace.Clear();
-                var point = faceData.ColorSpacePoints[0];
-                //foreach ( var point in faceData.ColorSpacePoints ) {
-                CanvasFace.Add( MakeEllipse( point, 5, Brushes.Green, scale ) );
-                //}
+                UpdateEllipse( faceData );
             }
 
             // 表示
             RaisePropertyChanged( "CanvasFace" );
             RaisePropertyChanged( "ColorImage" );
+        }
+
+        private void CreateEllipse()
+        {
+            facePoints = new List<Ellipse>();
+            for ( int i = 0; i <faceModel.VertexCount; i++ ) {
+                facePoints.Add( MakeEllipse( new Point( 0, 0 ), 1, Brushes.Green, 0.5f ) );
+            }
+
+            _CanvasFace = new ObservableCollection<FrameworkElement>( facePoints );
+        }
+
+        private void UpdateEllipse( FaceOutputContract.FaceData faceData )
+        {
+            float scale = 980 / (float)faceModel.ColorWidth;
+
+            for ( int i = 0; i <faceModel.VertexCount; i++ ) {
+                var ellipse = facePoints[i];
+                var point = faceData.ColorSpacePoints[i];
+
+                // カラーを縮小表示しているため合わせる
+                point.X *= scale;
+                point.Y *= scale;
+
+                // カラー座標系で円を配置する
+                Canvas.SetLeft( ellipse, point.X - (ellipse.Width / 2) );
+                Canvas.SetTop( ellipse, point.Y - (ellipse.Height / 2) );
+            }
         }
 
         private Ellipse MakeEllipse( Point point, int R, Brush color, float scale )
@@ -196,6 +221,7 @@ namespace FaceOutputViewer.ViewModels
             }
 
             faceModel.Start();
+            CreateEllipse();
         }
         #endregion
 

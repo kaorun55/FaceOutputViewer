@@ -53,6 +53,12 @@ namespace RealSenseFaceOutput
             private set;
         }
 
+        public uint VertexCount
+        {
+            get;
+            private set;
+        }
+
 
         public void Start()
         {

@@ -28,6 +28,11 @@ namespace FaceOutputContract
             get;
         }
 
+        uint VertexCount
+        {
+            get;
+        }
+
         int ColorWidth
         {
             get;
