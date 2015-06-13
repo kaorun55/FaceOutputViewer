@@ -152,10 +152,10 @@ namespace KinectV2FaceOutput
                 }
             }
 
-            UpdateFaceUotput();
+            UpdateFaceOutput();
         }
 
-        private void UpdateFaceUotput()
+        private void UpdateFaceOutput()
         {
             if ( OnFaceOutput!=null ) {
                 OnFaceOutput( this, new FaceOutputEventArgs( faceData, colorBitmap ) );
@@ -178,7 +178,7 @@ namespace KinectV2FaceOutput
                 colorBitmap = null;
             }
 
-            UpdateFaceUotput();
+            UpdateFaceOutput();
         }
     }
 }
